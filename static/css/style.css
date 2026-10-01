@@ -138,6 +138,9 @@ sub, sup { line-height: 0; }
   box-shadow: var(--shadow);
 }
 .media-frame video { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+/* Fullscreen fills a screen of any shape: letterbox rather than crop the sides. */
+.media-frame video:fullscreen { object-fit: contain; aspect-ratio: auto; }
+.media-frame video:-webkit-full-screen { object-fit: contain; aspect-ratio: auto; }
 .video-main { max-width: 960px; margin: 0 auto; }
 
 /* ---------------------------------------------------------------- stats */
