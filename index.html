@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Draft: A Parametric Tool for Robot Design Exploration</title>
+  <meta name="description" content="Draft compiles a short parametric description into a simulation-ready MuJoCo model, grounded in trends fitted to real actuators and robots.">
+  <meta name="keywords" content="Draft, robot design, co-design, parametric, MuJoCo, MJCF, legged robots, reinforcement learning">
+
+  <meta property="og:title" content="Draft: A Parametric Tool for Robot Design Exploration">
+  <meta property="og:description" content="Simulation-ready robot models from a parameter table, grounded in real actuator and robot hardware.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="media/social.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="media/social.jpg">
+
+  <link rel="icon" href="media/logo/draft.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans:400,500,700|Noto+Sans:400,500,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.4/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+
+<!-- ============================================================ HERO -->
+<header class="hero">
+  <div class="container narrow center">
+    <h1 class="title">Draft</h1>
+    <p class="subtitle">A Parametric Tool for Robot Design Exploration</p>
+
+    <p class="authors">
+      <span>David Nguyen<sup>1</sup></span>
+      <span>Marcelo Coelho<sup>2</sup></span>
+      <span>Sangbae Kim<sup>1</sup></span>
+    </p>
+    <p class="affiliations">
+      <span><sup>1</sup>Department of Mechanical Engineering, MIT</span>
+      <span><sup>2</sup>Department of Architecture, MIT</span>
+    </p>
+
+    <div class="logos">
+      <img src="media/logo/mit.svg" alt="MIT" class="logo-mit">
+      <img src="media/logo/brl.svg" alt="MIT Biomimetic Robotics Lab" class="logo-brl">
+    </div>
+
+    <!-- Paper and arXiv are disabled until there is a link; set href and drop .is-disabled. -->
+    <nav class="links">
+      <a class="pill is-disabled" href="#" aria-disabled="true" title="Coming soon"><i class="fas fa-file-pdf"></i><span>Paper</span></a>
+      <a class="pill is-disabled" href="#" aria-disabled="true" title="Coming soon"><i class="ai ai-arxiv"></i><span>arXiv</span></a>
+      <a class="pill" href="#video"><i class="fab fa-youtube"></i><span>Video</span></a>
+      <a class="pill" href="#builder"><i class="fas fa-sliders"></i><span>Build a robot</span></a>
+      <a class="pill" href="https://github.com/davidhnguyen2000/parametric-humanoid"><i class="fab fa-github"></i><span>Code</span></a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============================================================ SUMMARY -->
+<section class="summary">
+  <div class="container narrow">
+    <p>Trying a new robot design usually means redrawing it in CAD and rebuilding a
+      simulation model before a controller can be trained on it, so the choices that
+      set a machine's limits get made early, on static estimates. <b>Draft</b> removes
+      that step. A robot is a table of parameters and a kinematic tree, and one
+      compiler turns them into a simulation-ready MuJoCo model.</p>
+    <p>Whatever a design does not state, such as an actuator's gear ratio, mass, size
+      and rotor inertia, or a link's mass, comes from trends fitted to 114 real
+      actuators and 49 published robots. A feasibility gate refuses what no
+      catalogued hardware could build. Rebuilt this way from their geometry and
+      joint specifications alone, four commercial robots land within 25% of their
+      real mass.</p>
+    <p>Below, change a quadruped or a humanoid and watch Draft regenerate it in your
+      browser. Then see how three quadrupeds generated from one description, trained
+      under one curriculum, trade off speed, stair climbing and push recovery.</p>
+  </div>
+</section>
+
+<!-- ============================================================ BUILDER -->
+<section class="section builder-first" id="builder">
+  <div class="container wide">
+    <p class="eyebrow">Try it</p>
+    <h2 class="section-title">Build a robot</h2>
+    <p class="lede">Move the sliders and Draft regenerates the robot, here in your browser. You set
+      the limbs, the trunk and the actuators. The fitted trends set everything else, and the
+      feasibility gate refuses what no catalogued hardware could build.</p>
+    <p class="b-disclaimer">This demo exposes a handful of parameters. Draft itself can change
+      any value in a robot's parameter table or kinematic tree, and compiles robots of any tree,
+      not only these two.</p>
+
+    <div class="b-top">
+      <div class="seg" id="b-robot-tabs" role="tablist" aria-label="Robot"></div>
+      <p class="b-preset muted small" id="b-preset"></p>
+    </div>
+
+    <div class="builder">
+      <aside class="b-controls">
+        <div id="b-sliders"></div>
+        <button class="b-reset" type="button" id="b-reset"><i class="fas fa-rotate-left"></i> <span>Reset</span></button>
+        <p class="muted small b-note">This is Draft's own Python generator, running in the page
+          with <a href="https://pyodide.org">Pyodide</a>, and MuJoCo's WebAssembly build compiling
+          each model. Nothing is precomputed.</p>
+      </aside>
+
+      <div class="b-mid">
+        <div class="b-view">
+          <div id="b-canvas" class="b-canvas"></div>
+          <div class="b-overlay">
+            <span class="b-mass"><b id="b-mass">–</b> kg</span>
+            <span class="b-status" id="b-status"></span>
+            <span class="b-time" id="b-time"></span>
+          </div>
+          <div class="b-refused" id="b-refused" hidden>
+            <b><i class="fas fa-ban"></i> Refused by the feasibility gate</b>
+            <ul id="b-refused-list"></ul>
+            <span class="small">Showing the last design that passed.</span>
+          </div>
+          <div class="b-loading" id="b-loading">Starting the generator…</div>
+        </div>
+
+        <div class="b-fits" id="b-fits">
+          <div class="fits-head">
+            <h4>Where its actuators land on the fitted trends</h4>
+            <div class="fits-legend">
+              <span><i style="--c:var(--deep-blue)"></i>QDD</span>
+              <span><i style="--c:var(--deep-orange)"></i>MidGear</span>
+              <span><i style="--c:var(--deep-green)"></i>High GR</span>
+              <span><i class="this"></i>this design</span>
+            </div>
+          </div>
+          <div class="fits-grid">
+            <canvas data-panel="a" aria-label="Gear reduction against no-load speed"></canvas>
+            <canvas data-panel="b" aria-label="Mass against peak torque"></canvas>
+            <canvas data-panel="c" aria-label="Volume against peak torque"></canvas>
+            <canvas data-panel="d" aria-label="Rotor inertia against housing radius"></canvas>
+          </div>
+          <p class="muted small fits-note">Dots are the surveyed catalogue; lines are the trends fitted to it. Hover a black point to see which actuators it is.</p>
+        </div>
+      </div>
+
+      <aside class="b-report" id="b-report">
+        <section>
+          <h4>Model summary</h4>
+          <div class="massbar" id="b-massbar"></div>
+          <div class="massbar-legend" id="b-masslegend"></div>
+        </section>
+        <section>
+          <h4>Feasibility checks</h4>
+          <div id="b-checks"></div>
+        </section>
+        <section id="b-stretch-box" hidden>
+          <h4>Lengthened to fit the actuators</h4>
+          <div id="b-stretch"></div>
+        </section>
+        <section>
+          <details>
+            <summary>Warnings <span class="count" id="b-warn-count"></span></summary>
+            <ul class="warnings" id="b-warnings"></ul>
+          </details>
+        </section>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ TEASER -->
+<!-- Hidden for now: the page goes from the builder straight to the comparison.
+     Remove `hidden` here and on the stats strip to bring both back. -->
+<section class="teaser" hidden>
+  <div class="container">
+    <div class="media-frame">
+      <video class="autoplay" poster="media/video/teaser.jpg" muted loop playsinline preload="none">
+        <source src="media/video/teaser.mp4" type="video/mp4">
+      </video>
+    </div>
+    <p class="teaser-caption">
+      <b>Draft</b> turns a few parameter files into a simulation-ready robot model.
+      Change a number and the whole robot updates, and designs that real hardware
+      could not build are rejected.
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================ STATS -->
+<section class="stats" hidden>
+  <div class="container">
+    <div class="stat-row">
+      <div class="stat"><span class="stat-num">114</span><span class="stat-label">actuators surveyed</span></div>
+      <div class="stat"><span class="stat-num">49</span><span class="stat-label">published robots fitted</span></div>
+      <div class="stat"><span class="stat-num">±25%</span><span class="stat-label">mass error on four<br>off-the-shelf twins</span></div>
+      <div class="stat"><span class="stat-num">1</span><span class="stat-label">learning environment<br>for every design</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ EXPLORER (headline) -->
+<section class="section alt" id="explorer">
+  <div class="container">
+    <p class="eyebrow">Same environment, different robots</p>
+    <h2 class="section-title">One curriculum, three answers</h2>
+    <p class="lede">Three quadrupeds generated from one description train in the same environment
+      under the same curriculum. Ramp the difficulty and watch where each one gives out, and
+      which of its joints hits the edge of its motor's torque–speed curve first.</p>
+
+    <div class="explorer-bar">
+      <label class="switch">
+        <input type="checkbox" id="sync" checked>
+        <span class="switch-track"><span class="switch-thumb"></span></span>
+        <span>Move all three robots together</span>
+      </label>
+      <span class="muted small" id="explorer-note"></span>
+    </div>
+
+    <div id="explorer-rows" class="explorer-rows"></div>
+
+    <template id="row-template">
+      <article class="xrow">
+        <header class="xrow-head">
+          <div class="xrow-id">
+            <span class="xrow-swatch"></span>
+            <h3 class="xrow-name"></h3>
+            <span class="xrow-facts"></span>
+          </div>
+          <div class="task-nav">
+            <button class="arrow" data-step="-1" aria-label="Previous task"><i class="fas fa-chevron-left"></i></button>
+            <div class="task-name"><b></b><span class="task-count"></span></div>
+            <button class="arrow" data-step="1" aria-label="Next task"><i class="fas fa-chevron-right"></i></button>
+          </div>
+        </header>
+        <div class="xrow-body">
+          <div class="xrow-video">
+            <video muted loop playsinline preload="none" hidden></video>
+            <div class="ph ph-live">
+              <div class="ph-body">
+                <span class="ph-tag">Video placeholder</span>
+                <b class="ph-title"></b>
+                <p class="ph-desc"></p>
+                <code class="ph-path"></code>
+              </div>
+            </div>
+          </div>
+          <div class="xrow-plot">
+            <div class="plot-head">
+              <span>Joint utilization over the run</span>
+            </div>
+            <canvas class="ts-plot" aria-label="Torque against speed for each joint, as a share of its motor's limits"></canvas>
+            <div class="plot-legend">
+              <span><i style="--c:var(--j-roll)"></i>hip roll</span>
+              <span><i style="--c:var(--j-pitch)"></i>hip pitch</span>
+              <span><i style="--c:var(--j-knee)"></i>knee</span>
+              <span><i class="ring"></i>95th percentile</span>
+            </div>
+            <p class="plot-readout"></p>
+          </div>
+        </div>
+        <div class="xrow-ladder">
+          <input type="range" class="level" min="0" step="1" aria-label="Curriculum level">
+          <div class="rungs"></div>
+          <p class="rung-caption"></p>
+        </div>
+      </article>
+    </template>
+  </div>
+</section>
+
+<!-- ============================================================ VIDEO -->
+<section class="section" id="video">
+  <div class="container">
+    <h2 class="section-title">Video</h2>
+    <div class="media-frame video-main">
+      <video controls playsinline preload="none" poster="media/video/supplementary.jpg">
+        <source src="media/video/supplementary.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ ABSTRACT -->
+<section class="section alt" id="abstract">
+  <div class="container narrow">
+    <h2 class="section-title">Abstract</h2>
+    <p class="abstract">
+      Robot performance is often limited by the cost of iterating on morphology and control together,
+      since every computer-aided design (CAD) change has to be carried into a simulation-ready model
+      before control work begins. Co-design methods attempt to close this gap, but each uses a model
+      generator written for a single platform or lacks real-world data to suggest that its designs are
+      plausible. We present <b>Draft</b>, a parametric generation tool whose generalized engine compiles
+      any parametric tree of serial chains into a simulation-ready MJCF model, without CAD. It lets
+      engineers explore design tradeoffs through easily adjustable models and evaluate how changes
+      influence controller performance. Draft grounds the free parameters of each design using trends
+      fitted to a survey of 114 actuators and 49 published robot descriptions, so that a generated robot
+      is anchored to real-world hardware. We validate those trends holistically by building twins of four
+      off-the-shelf robots, whose masses agree to a 1.10× geometric mean fold error. Finally, we
+      demonstrate how Draft exposes design tradeoffs by evaluating three quadrupeds through a two-stage
+      reinforcement learning curriculum.
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================ HOW IT WORKS -->
+<!-- Hidden for now: the supplementary video explains the same ground. Remove
+     `hidden` to bring it back; its videos are built by render_videos.py. -->
+<section class="section alt" id="how" hidden>
+  <div class="container">
+    <h2 class="section-title">How Draft works</h2>
+    <div class="how">
+      <article class="how-step">
+        <header><span class="step-n">1</span><div><h3>Generate</h3>
+          <p>One compiler builds any robot from four link primitives, with no CAD.</p></div></header>
+        <div class="media-frame">
+          <video class="autoplay" poster="media/video/generator.jpg" muted loop playsinline preload="none">
+            <source src="media/video/generator.mp4" type="video/mp4">
+          </video>
+        </div>
+      </article>
+      <article class="how-step">
+        <header><span class="step-n">2</span><div><h3>Ground</h3>
+          <p>Trends fitted to 114 actuators and 49 published robots fill in everything a design leaves unstated.</p></div></header>
+        <div class="media-frame">
+          <video class="autoplay" poster="media/video/trends.jpg" muted loop playsinline preload="none">
+            <source src="media/video/trends.mp4" type="video/mp4">
+          </video>
+        </div>
+      </article>
+      <article class="how-step">
+        <header><span class="step-n">3</span><div><h3>Validate</h3>
+          <p>Rebuilt from geometry and joint specs alone, four commercial robots land within 25% of their mass.</p></div></header>
+        <div class="media-frame">
+          <video class="autoplay" poster="media/video/twins.jpg" muted loop playsinline preload="none">
+            <source src="media/video/twins.mp4" type="video/mp4">
+          </video>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ BIBTEX -->
+<section class="section" id="bibtex">
+  <div class="container narrow">
+    <h2 class="section-title">BibTeX</h2>
+    <div class="bibtex">
+      <button class="copy" type="button" aria-label="Copy BibTeX"><i class="far fa-copy"></i> <span>Copy</span></button>
+<pre><code id="bibtex-code">@misc{nguyen2026draft,
+  title  = {Draft: A Parametric Tool for Robot Design Exploration},
+  author = {Nguyen, David and Coelho, Marcelo and Kim, Sangbae},
+  year   = {2026}
+}</code></pre>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container narrow center">
+    <p class="muted small">Page layout follows the convention of the <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> project page.</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="static/js/main.js"></script>
+<script src="static/js/explorer.js"></script>
+<script src="static/js/builder.js"></script>
+</body>
+</html>

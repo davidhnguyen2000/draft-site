@@ -1,0 +1,1629 @@
+{
+ "round": "r10",
+ "seed": 0,
+ "joint_names": [
+  "fl_hip_roll",
+  "fl_hip_pitch",
+  "fl_knee",
+  "fr_hip_roll",
+  "fr_hip_pitch",
+  "fr_knee",
+  "rl_hip_roll",
+  "rl_hip_pitch",
+  "rl_knee",
+  "rr_hip_roll",
+  "rr_hip_pitch",
+  "rr_knee"
+ ],
+ "tasks": [
+  {
+   "key": "velocity",
+   "name": "Speed",
+   "goal": "keep pace: stay ahead of a flag moving at 75% of the command"
+  },
+  {
+   "key": "terrain_climb",
+   "name": "Stairs up",
+   "goal": "reach the top of a stair pit"
+  },
+  {
+   "key": "terrain_descend",
+   "name": "Stairs down",
+   "goal": "reach the bottom of a stair mound"
+  },
+  {
+   "key": "push",
+   "name": "Push recovery",
+   "goal": "take one kick while walking and stay up"
+  }
+ ],
+ "robots": {
+  "cheetah": {
+   "velocity": {
+    "axis": "command (m/s)",
+    "curriculum": "command range ramps ±6 → ±9 → ±12 → ±15 m/s at iterations 0 / 400 / 900 / 1400, on gentle terrain (levels 0-3)",
+    "rungs": [
+     {
+      "chip": "0.5",
+      "video": "media/curriculum/cheetah_velocity_00.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_velocity_00.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 0.5 m/s on gentle terrain",
+      "passed": 5,
+      "n": 16
+     },
+     {
+      "chip": "1",
+      "video": "media/curriculum/cheetah_velocity_01.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_velocity_01.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 1 m/s on gentle terrain",
+      "passed": 10,
+      "n": 16
+     },
+     {
+      "chip": "1.5",
+      "video": "media/curriculum/cheetah_velocity_02.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_velocity_02.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 1.5 m/s on gentle terrain",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "2",
+      "video": "media/curriculum/cheetah_velocity_03.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_velocity_03.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 2 m/s on gentle terrain",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "2.5",
+      "video": "media/curriculum/cheetah_velocity_04.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_velocity_04.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 2.5 m/s on gentle terrain",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "3",
+      "video": "media/curriculum/cheetah_velocity_05.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_velocity_05.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 3 m/s on gentle terrain",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "3.5",
+      "video": "media/curriculum/cheetah_velocity_06.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_velocity_06.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 3.5 m/s on gentle terrain",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "4",
+      "video": "media/curriculum/cheetah_velocity_07.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_velocity_07.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 4 m/s on gentle terrain",
+      "passed": 15,
+      "n": 16
+     },
+     {
+      "chip": "4.5",
+      "video": "media/curriculum/cheetah_velocity_08.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_velocity_08.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 4.5 m/s on gentle terrain",
+      "passed": 15,
+      "n": 16
+     },
+     {
+      "chip": "5",
+      "video": "media/curriculum/cheetah_velocity_09.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_velocity_09.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 5 m/s on gentle terrain",
+      "passed": 2,
+      "n": 16
+     },
+     {
+      "chip": "5.5",
+      "video": "media/curriculum/cheetah_velocity_10.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_velocity_10.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 5.5 m/s on gentle terrain",
+      "passed": 0,
+      "n": 16
+     },
+     {
+      "chip": "6",
+      "video": "media/curriculum/cheetah_velocity_11.mp4",
+      "video_ready": false,
+      "joints": "data/joints/cheetah_velocity_11.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "7",
+      "video": "media/curriculum/cheetah_velocity_12.mp4",
+      "video_ready": false,
+      "joints": "data/joints/cheetah_velocity_12.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "8",
+      "video": "media/curriculum/cheetah_velocity_13.mp4",
+      "video_ready": false,
+      "joints": "data/joints/cheetah_velocity_13.json",
+      "joints_ready": false,
+      "reached": false
+     }
+    ]
+   },
+   "terrain_climb": {
+    "axis": "step (cm)",
+    "curriculum": "difficulty levels 0-9 of a stairs/waves/slopes/rough mix, promoted by distance walked",
+    "rungs": [
+     {
+      "chip": "5",
+      "video": "media/curriculum/cheetah_terrain_climb_00.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_terrain_climb_00.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs up, 5.0 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "7.5",
+      "video": "media/curriculum/cheetah_terrain_climb_01.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_terrain_climb_01.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs up, 7.5 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "10",
+      "video": "media/curriculum/cheetah_terrain_climb_02.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_terrain_climb_02.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs up, 10.0 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "12.5",
+      "video": "media/curriculum/cheetah_terrain_climb_03.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_terrain_climb_03.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs up, 12.5 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "15",
+      "video": "media/curriculum/cheetah_terrain_climb_04.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_terrain_climb_04.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs up, 15.0 cm steps",
+      "passed": 0,
+      "n": 16
+     },
+     {
+      "chip": "17.5",
+      "video": "media/curriculum/cheetah_terrain_climb_05.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_terrain_climb_05.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs up, 17.5 cm steps",
+      "passed": 0,
+      "n": 16
+     },
+     {
+      "chip": "20",
+      "video": "media/curriculum/cheetah_terrain_climb_06.mp4",
+      "video_ready": false,
+      "joints": "data/joints/cheetah_terrain_climb_06.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "22.5",
+      "video": "media/curriculum/cheetah_terrain_climb_07.mp4",
+      "video_ready": false,
+      "joints": "data/joints/cheetah_terrain_climb_07.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "25",
+      "video": "media/curriculum/cheetah_terrain_climb_08.mp4",
+      "video_ready": false,
+      "joints": "data/joints/cheetah_terrain_climb_08.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "27.5",
+      "video": "media/curriculum/cheetah_terrain_climb_09.mp4",
+      "video_ready": false,
+      "joints": "data/joints/cheetah_terrain_climb_09.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "30",
+      "video": "media/curriculum/cheetah_terrain_climb_10.mp4",
+      "video_ready": false,
+      "joints": "data/joints/cheetah_terrain_climb_10.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "35",
+      "video": "media/curriculum/cheetah_terrain_climb_11.mp4",
+      "video_ready": false,
+      "joints": "data/joints/cheetah_terrain_climb_11.json",
+      "joints_ready": false,
+      "reached": false
+     }
+    ]
+   },
+   "terrain_descend": {
+    "axis": "step (cm)",
+    "curriculum": "difficulty levels 0-9 of a stairs/waves/slopes/rough mix, promoted by distance walked",
+    "rungs": [
+     {
+      "chip": "5",
+      "video": "media/curriculum/cheetah_terrain_descend_00.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_terrain_descend_00.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs down, 5.0 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "7.5",
+      "video": "media/curriculum/cheetah_terrain_descend_01.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_terrain_descend_01.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs down, 7.5 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "10",
+      "video": "media/curriculum/cheetah_terrain_descend_02.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_terrain_descend_02.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs down, 10.0 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "12.5",
+      "video": "media/curriculum/cheetah_terrain_descend_03.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_terrain_descend_03.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs down, 12.5 cm steps",
+      "passed": 0,
+      "n": 16
+     },
+     {
+      "chip": "15",
+      "video": "media/curriculum/cheetah_terrain_descend_04.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_terrain_descend_04.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs down, 15.0 cm steps",
+      "passed": 0,
+      "n": 16
+     },
+     {
+      "chip": "17.5",
+      "video": "media/curriculum/cheetah_terrain_descend_05.mp4",
+      "video_ready": false,
+      "joints": "data/joints/cheetah_terrain_descend_05.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "20",
+      "video": "media/curriculum/cheetah_terrain_descend_06.mp4",
+      "video_ready": false,
+      "joints": "data/joints/cheetah_terrain_descend_06.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "22.5",
+      "video": "media/curriculum/cheetah_terrain_descend_07.mp4",
+      "video_ready": false,
+      "joints": "data/joints/cheetah_terrain_descend_07.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "25",
+      "video": "media/curriculum/cheetah_terrain_descend_08.mp4",
+      "video_ready": false,
+      "joints": "data/joints/cheetah_terrain_descend_08.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "27.5",
+      "video": "media/curriculum/cheetah_terrain_descend_09.mp4",
+      "video_ready": false,
+      "joints": "data/joints/cheetah_terrain_descend_09.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "30",
+      "video": "media/curriculum/cheetah_terrain_descend_10.mp4",
+      "video_ready": false,
+      "joints": "data/joints/cheetah_terrain_descend_10.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "35",
+      "video": "media/curriculum/cheetah_terrain_descend_11.mp4",
+      "video_ready": false,
+      "joints": "data/joints/cheetah_terrain_descend_11.json",
+      "joints_ready": false,
+      "reached": false
+     }
+    ]
+   },
+   "push": {
+    "axis": "kick (m/s)",
+    "curriculum": "kicks ramp 0.5 → 1.0 → 1.75 → 2.5 m/s at iterations 0 / 400 / 800 / 1200, on gentle terrain (levels 0-3)",
+    "rungs": [
+     {
+      "chip": "1",
+      "video": "media/curriculum/cheetah_push_00.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_push_00.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "one 1 m/s kick while walking 0.4 m/s on gentle terrain",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "2",
+      "video": "media/curriculum/cheetah_push_01.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_push_01.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "one 2 m/s kick while walking 0.4 m/s on gentle terrain",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "3",
+      "video": "media/curriculum/cheetah_push_02.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_push_02.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "one 3 m/s kick while walking 0.4 m/s on gentle terrain",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "4",
+      "video": "media/curriculum/cheetah_push_03.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_push_03.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "one 4 m/s kick while walking 0.4 m/s on gentle terrain",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "5",
+      "video": "media/curriculum/cheetah_push_04.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_push_04.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "one 5 m/s kick while walking 0.4 m/s on gentle terrain",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "6",
+      "video": "media/curriculum/cheetah_push_05.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_push_05.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "one 6 m/s kick while walking 0.4 m/s on gentle terrain",
+      "passed": 13,
+      "n": 16
+     },
+     {
+      "chip": "7",
+      "video": "media/curriculum/cheetah_push_06.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_push_06.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "one 7 m/s kick while walking 0.4 m/s on gentle terrain",
+      "passed": 9,
+      "n": 16
+     },
+     {
+      "chip": "8",
+      "video": "media/curriculum/cheetah_push_07.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_push_07.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "one 8 m/s kick while walking 0.4 m/s on gentle terrain",
+      "passed": 7,
+      "n": 16
+     },
+     {
+      "chip": "9",
+      "video": "media/curriculum/cheetah_push_08.mp4",
+      "video_ready": true,
+      "joints": "data/joints/cheetah_push_08.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "one 9 m/s kick while walking 0.4 m/s on gentle terrain",
+      "passed": 3,
+      "n": 16
+     },
+     {
+      "chip": "10",
+      "video": "media/curriculum/cheetah_push_09.mp4",
+      "video_ready": false,
+      "joints": "data/joints/cheetah_push_09.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "11",
+      "video": "media/curriculum/cheetah_push_10.mp4",
+      "video_ready": false,
+      "joints": "data/joints/cheetah_push_10.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "12",
+      "video": "media/curriculum/cheetah_push_11.mp4",
+      "video_ready": false,
+      "joints": "data/joints/cheetah_push_11.json",
+      "joints_ready": false,
+      "reached": false
+     }
+    ]
+   }
+  },
+  "bear": {
+   "velocity": {
+    "axis": "command (m/s)",
+    "curriculum": "command range ramps ±6 → ±9 → ±12 → ±15 m/s at iterations 0 / 400 / 900 / 1400, on gentle terrain (levels 0-3)",
+    "rungs": [
+     {
+      "chip": "0.5",
+      "video": "media/curriculum/bear_velocity_00.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_velocity_00.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 0.5 m/s on gentle terrain",
+      "passed": 5,
+      "n": 16
+     },
+     {
+      "chip": "1",
+      "video": "media/curriculum/bear_velocity_01.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_velocity_01.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 1 m/s on gentle terrain",
+      "passed": 14,
+      "n": 16
+     },
+     {
+      "chip": "1.5",
+      "video": "media/curriculum/bear_velocity_02.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_velocity_02.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 1.5 m/s on gentle terrain",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "2",
+      "video": "media/curriculum/bear_velocity_03.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_velocity_03.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 2 m/s on gentle terrain",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "2.5",
+      "video": "media/curriculum/bear_velocity_04.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_velocity_04.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 2.5 m/s on gentle terrain",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "3",
+      "video": "media/curriculum/bear_velocity_05.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_velocity_05.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 3 m/s on gentle terrain",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "3.5",
+      "video": "media/curriculum/bear_velocity_06.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_velocity_06.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 3.5 m/s on gentle terrain",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "4",
+      "video": "media/curriculum/bear_velocity_07.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_velocity_07.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 4 m/s on gentle terrain",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "4.5",
+      "video": "media/curriculum/bear_velocity_08.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_velocity_08.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 4.5 m/s on gentle terrain",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "5",
+      "video": "media/curriculum/bear_velocity_09.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_velocity_09.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 5 m/s on gentle terrain",
+      "passed": 15,
+      "n": 16
+     },
+     {
+      "chip": "5.5",
+      "video": "media/curriculum/bear_velocity_10.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_velocity_10.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 5.5 m/s on gentle terrain",
+      "passed": 10,
+      "n": 16
+     },
+     {
+      "chip": "6",
+      "video": "media/curriculum/bear_velocity_11.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_velocity_11.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 6 m/s on gentle terrain",
+      "passed": 0,
+      "n": 16
+     },
+     {
+      "chip": "7",
+      "video": "media/curriculum/bear_velocity_12.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_velocity_12.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 7 m/s on gentle terrain",
+      "passed": 0,
+      "n": 16
+     },
+     {
+      "chip": "8",
+      "video": "media/curriculum/bear_velocity_13.mp4",
+      "video_ready": false,
+      "joints": "data/joints/bear_velocity_13.json",
+      "joints_ready": false,
+      "reached": false
+     }
+    ]
+   },
+   "terrain_climb": {
+    "axis": "step (cm)",
+    "curriculum": "difficulty levels 0-9 of a stairs/waves/slopes/rough mix, promoted by distance walked",
+    "rungs": [
+     {
+      "chip": "5",
+      "video": "media/curriculum/bear_terrain_climb_00.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_terrain_climb_00.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs up, 5.0 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "7.5",
+      "video": "media/curriculum/bear_terrain_climb_01.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_terrain_climb_01.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs up, 7.5 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "10",
+      "video": "media/curriculum/bear_terrain_climb_02.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_terrain_climb_02.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs up, 10.0 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "12.5",
+      "video": "media/curriculum/bear_terrain_climb_03.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_terrain_climb_03.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs up, 12.5 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "15",
+      "video": "media/curriculum/bear_terrain_climb_04.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_terrain_climb_04.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs up, 15.0 cm steps",
+      "passed": 12,
+      "n": 16
+     },
+     {
+      "chip": "17.5",
+      "video": "media/curriculum/bear_terrain_climb_05.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_terrain_climb_05.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs up, 17.5 cm steps",
+      "passed": 2,
+      "n": 16
+     },
+     {
+      "chip": "20",
+      "video": "media/curriculum/bear_terrain_climb_06.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_terrain_climb_06.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs up, 20.0 cm steps",
+      "passed": 0,
+      "n": 16
+     },
+     {
+      "chip": "22.5",
+      "video": "media/curriculum/bear_terrain_climb_07.mp4",
+      "video_ready": false,
+      "joints": "data/joints/bear_terrain_climb_07.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "25",
+      "video": "media/curriculum/bear_terrain_climb_08.mp4",
+      "video_ready": false,
+      "joints": "data/joints/bear_terrain_climb_08.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "27.5",
+      "video": "media/curriculum/bear_terrain_climb_09.mp4",
+      "video_ready": false,
+      "joints": "data/joints/bear_terrain_climb_09.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "30",
+      "video": "media/curriculum/bear_terrain_climb_10.mp4",
+      "video_ready": false,
+      "joints": "data/joints/bear_terrain_climb_10.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "35",
+      "video": "media/curriculum/bear_terrain_climb_11.mp4",
+      "video_ready": false,
+      "joints": "data/joints/bear_terrain_climb_11.json",
+      "joints_ready": false,
+      "reached": false
+     }
+    ]
+   },
+   "terrain_descend": {
+    "axis": "step (cm)",
+    "curriculum": "difficulty levels 0-9 of a stairs/waves/slopes/rough mix, promoted by distance walked",
+    "rungs": [
+     {
+      "chip": "5",
+      "video": "media/curriculum/bear_terrain_descend_00.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_terrain_descend_00.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs down, 5.0 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "7.5",
+      "video": "media/curriculum/bear_terrain_descend_01.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_terrain_descend_01.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs down, 7.5 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "10",
+      "video": "media/curriculum/bear_terrain_descend_02.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_terrain_descend_02.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs down, 10.0 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "12.5",
+      "video": "media/curriculum/bear_terrain_descend_03.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_terrain_descend_03.json",
+      "joints_ready": false,
+      "reached": true,
+      "label": "stairs down, 12.5 cm steps",
+      "passed": 10,
+      "n": 16
+     },
+     {
+      "chip": "15",
+      "video": "media/curriculum/bear_terrain_descend_04.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_terrain_descend_04.json",
+      "joints_ready": false,
+      "reached": true,
+      "label": "stairs down, 15.0 cm steps",
+      "passed": 0,
+      "n": 16
+     },
+     {
+      "chip": "17.5",
+      "video": "media/curriculum/bear_terrain_descend_05.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_terrain_descend_05.json",
+      "joints_ready": false,
+      "reached": true,
+      "label": "stairs down, 17.5 cm steps",
+      "passed": 0,
+      "n": 16
+     },
+     {
+      "chip": "20",
+      "video": "media/curriculum/bear_terrain_descend_06.mp4",
+      "video_ready": false,
+      "joints": "data/joints/bear_terrain_descend_06.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "22.5",
+      "video": "media/curriculum/bear_terrain_descend_07.mp4",
+      "video_ready": false,
+      "joints": "data/joints/bear_terrain_descend_07.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "25",
+      "video": "media/curriculum/bear_terrain_descend_08.mp4",
+      "video_ready": false,
+      "joints": "data/joints/bear_terrain_descend_08.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "27.5",
+      "video": "media/curriculum/bear_terrain_descend_09.mp4",
+      "video_ready": false,
+      "joints": "data/joints/bear_terrain_descend_09.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "30",
+      "video": "media/curriculum/bear_terrain_descend_10.mp4",
+      "video_ready": false,
+      "joints": "data/joints/bear_terrain_descend_10.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "35",
+      "video": "media/curriculum/bear_terrain_descend_11.mp4",
+      "video_ready": false,
+      "joints": "data/joints/bear_terrain_descend_11.json",
+      "joints_ready": false,
+      "reached": false
+     }
+    ]
+   },
+   "push": {
+    "axis": "kick (m/s)",
+    "curriculum": "kicks ramp 0.5 → 1.0 → 1.75 → 2.5 m/s at iterations 0 / 400 / 800 / 1200, on gentle terrain (levels 0-3)",
+    "rungs": [
+     {
+      "chip": "1",
+      "video": "media/curriculum/bear_push_00.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_push_00.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "one 1 m/s kick while walking 0.4 m/s on gentle terrain",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "2",
+      "video": "media/curriculum/bear_push_01.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_push_01.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "one 2 m/s kick while walking 0.4 m/s on gentle terrain",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "3",
+      "video": "media/curriculum/bear_push_02.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_push_02.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "one 3 m/s kick while walking 0.4 m/s on gentle terrain",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "4",
+      "video": "media/curriculum/bear_push_03.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_push_03.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "one 4 m/s kick while walking 0.4 m/s on gentle terrain",
+      "passed": 14,
+      "n": 16
+     },
+     {
+      "chip": "5",
+      "video": "media/curriculum/bear_push_04.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_push_04.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "one 5 m/s kick while walking 0.4 m/s on gentle terrain",
+      "passed": 15,
+      "n": 16
+     },
+     {
+      "chip": "6",
+      "video": "media/curriculum/bear_push_05.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_push_05.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "one 6 m/s kick while walking 0.4 m/s on gentle terrain",
+      "passed": 13,
+      "n": 16
+     },
+     {
+      "chip": "7",
+      "video": "media/curriculum/bear_push_06.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_push_06.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "one 7 m/s kick while walking 0.4 m/s on gentle terrain",
+      "passed": 11,
+      "n": 16
+     },
+     {
+      "chip": "8",
+      "video": "media/curriculum/bear_push_07.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_push_07.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "one 8 m/s kick while walking 0.4 m/s on gentle terrain",
+      "passed": 10,
+      "n": 16
+     },
+     {
+      "chip": "9",
+      "video": "media/curriculum/bear_push_08.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_push_08.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "one 9 m/s kick while walking 0.4 m/s on gentle terrain",
+      "passed": 9,
+      "n": 16
+     },
+     {
+      "chip": "10",
+      "video": "media/curriculum/bear_push_09.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_push_09.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "one 10 m/s kick while walking 0.4 m/s on gentle terrain",
+      "passed": 4,
+      "n": 16
+     },
+     {
+      "chip": "11",
+      "video": "media/curriculum/bear_push_10.mp4",
+      "video_ready": true,
+      "joints": "data/joints/bear_push_10.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "one 11 m/s kick while walking 0.4 m/s on gentle terrain",
+      "passed": 4,
+      "n": 16
+     },
+     {
+      "chip": "12",
+      "video": "media/curriculum/bear_push_11.mp4",
+      "video_ready": false,
+      "joints": "data/joints/bear_push_11.json",
+      "joints_ready": false,
+      "reached": false
+     }
+    ]
+   }
+  },
+  "giraffe": {
+   "velocity": {
+    "axis": "command (m/s)",
+    "curriculum": "command range ramps ±6 → ±9 → ±12 → ±15 m/s at iterations 0 / 400 / 900 / 1400, on gentle terrain (levels 0-3)",
+    "rungs": [
+     {
+      "chip": "0.5",
+      "video": "media/curriculum/giraffe_velocity_00.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_velocity_00.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 0.5 m/s on gentle terrain",
+      "passed": 6,
+      "n": 16
+     },
+     {
+      "chip": "1",
+      "video": "media/curriculum/giraffe_velocity_01.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_velocity_01.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 1 m/s on gentle terrain",
+      "passed": 12,
+      "n": 16
+     },
+     {
+      "chip": "1.5",
+      "video": "media/curriculum/giraffe_velocity_02.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_velocity_02.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 1.5 m/s on gentle terrain",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "2",
+      "video": "media/curriculum/giraffe_velocity_03.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_velocity_03.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 2 m/s on gentle terrain",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "2.5",
+      "video": "media/curriculum/giraffe_velocity_04.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_velocity_04.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 2.5 m/s on gentle terrain",
+      "passed": 15,
+      "n": 16
+     },
+     {
+      "chip": "3",
+      "video": "media/curriculum/giraffe_velocity_05.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_velocity_05.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 3 m/s on gentle terrain",
+      "passed": 2,
+      "n": 16
+     },
+     {
+      "chip": "3.5",
+      "video": "media/curriculum/giraffe_velocity_06.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_velocity_06.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "command 3.5 m/s on gentle terrain",
+      "passed": 0,
+      "n": 16
+     },
+     {
+      "chip": "4",
+      "video": "media/curriculum/giraffe_velocity_07.mp4",
+      "video_ready": false,
+      "joints": "data/joints/giraffe_velocity_07.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "4.5",
+      "video": "media/curriculum/giraffe_velocity_08.mp4",
+      "video_ready": false,
+      "joints": "data/joints/giraffe_velocity_08.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "5",
+      "video": "media/curriculum/giraffe_velocity_09.mp4",
+      "video_ready": false,
+      "joints": "data/joints/giraffe_velocity_09.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "5.5",
+      "video": "media/curriculum/giraffe_velocity_10.mp4",
+      "video_ready": false,
+      "joints": "data/joints/giraffe_velocity_10.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "6",
+      "video": "media/curriculum/giraffe_velocity_11.mp4",
+      "video_ready": false,
+      "joints": "data/joints/giraffe_velocity_11.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "7",
+      "video": "media/curriculum/giraffe_velocity_12.mp4",
+      "video_ready": false,
+      "joints": "data/joints/giraffe_velocity_12.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "8",
+      "video": "media/curriculum/giraffe_velocity_13.mp4",
+      "video_ready": false,
+      "joints": "data/joints/giraffe_velocity_13.json",
+      "joints_ready": false,
+      "reached": false
+     }
+    ]
+   },
+   "terrain_climb": {
+    "axis": "step (cm)",
+    "curriculum": "difficulty levels 0-9 of a stairs/waves/slopes/rough mix, promoted by distance walked",
+    "rungs": [
+     {
+      "chip": "5",
+      "video": "media/curriculum/giraffe_terrain_climb_00.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_terrain_climb_00.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs up, 5.0 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "7.5",
+      "video": "media/curriculum/giraffe_terrain_climb_01.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_terrain_climb_01.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs up, 7.5 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "10",
+      "video": "media/curriculum/giraffe_terrain_climb_02.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_terrain_climb_02.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs up, 10.0 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "12.5",
+      "video": "media/curriculum/giraffe_terrain_climb_03.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_terrain_climb_03.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs up, 12.5 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "15",
+      "video": "media/curriculum/giraffe_terrain_climb_04.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_terrain_climb_04.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs up, 15.0 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "17.5",
+      "video": "media/curriculum/giraffe_terrain_climb_05.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_terrain_climb_05.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs up, 17.5 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "20",
+      "video": "media/curriculum/giraffe_terrain_climb_06.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_terrain_climb_06.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs up, 20.0 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "22.5",
+      "video": "media/curriculum/giraffe_terrain_climb_07.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_terrain_climb_07.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs up, 22.5 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "25",
+      "video": "media/curriculum/giraffe_terrain_climb_08.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_terrain_climb_08.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs up, 25.0 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "27.5",
+      "video": "media/curriculum/giraffe_terrain_climb_09.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_terrain_climb_09.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs up, 27.5 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "30",
+      "video": "media/curriculum/giraffe_terrain_climb_10.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_terrain_climb_10.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs up, 30.0 cm steps",
+      "passed": 15,
+      "n": 16
+     },
+     {
+      "chip": "35",
+      "video": "media/curriculum/giraffe_terrain_climb_11.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_terrain_climb_11.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs up, 35.0 cm steps",
+      "passed": 4,
+      "n": 16
+     }
+    ]
+   },
+   "terrain_descend": {
+    "axis": "step (cm)",
+    "curriculum": "difficulty levels 0-9 of a stairs/waves/slopes/rough mix, promoted by distance walked",
+    "rungs": [
+     {
+      "chip": "5",
+      "video": "media/curriculum/giraffe_terrain_descend_00.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_terrain_descend_00.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs down, 5.0 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "7.5",
+      "video": "media/curriculum/giraffe_terrain_descend_01.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_terrain_descend_01.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs down, 7.5 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "10",
+      "video": "media/curriculum/giraffe_terrain_descend_02.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_terrain_descend_02.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs down, 10.0 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "12.5",
+      "video": "media/curriculum/giraffe_terrain_descend_03.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_terrain_descend_03.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs down, 12.5 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "15",
+      "video": "media/curriculum/giraffe_terrain_descend_04.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_terrain_descend_04.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs down, 15.0 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "17.5",
+      "video": "media/curriculum/giraffe_terrain_descend_05.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_terrain_descend_05.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs down, 17.5 cm steps",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "20",
+      "video": "media/curriculum/giraffe_terrain_descend_06.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_terrain_descend_06.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs down, 20.0 cm steps",
+      "passed": 8,
+      "n": 16
+     },
+     {
+      "chip": "22.5",
+      "video": "media/curriculum/giraffe_terrain_descend_07.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_terrain_descend_07.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs down, 22.5 cm steps",
+      "passed": 0,
+      "n": 16
+     },
+     {
+      "chip": "25",
+      "video": "media/curriculum/giraffe_terrain_descend_08.mp4",
+      "video_ready": false,
+      "joints": "data/joints/giraffe_terrain_descend_08.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "stairs down, 25.0 cm steps",
+      "passed": 0,
+      "n": 16
+     },
+     {
+      "chip": "27.5",
+      "video": "media/curriculum/giraffe_terrain_descend_09.mp4",
+      "video_ready": false,
+      "joints": "data/joints/giraffe_terrain_descend_09.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "30",
+      "video": "media/curriculum/giraffe_terrain_descend_10.mp4",
+      "video_ready": false,
+      "joints": "data/joints/giraffe_terrain_descend_10.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "35",
+      "video": "media/curriculum/giraffe_terrain_descend_11.mp4",
+      "video_ready": false,
+      "joints": "data/joints/giraffe_terrain_descend_11.json",
+      "joints_ready": false,
+      "reached": false
+     }
+    ]
+   },
+   "push": {
+    "axis": "kick (m/s)",
+    "curriculum": "kicks ramp 0.5 → 1.0 → 1.75 → 2.5 m/s at iterations 0 / 400 / 800 / 1200, on gentle terrain (levels 0-3)",
+    "rungs": [
+     {
+      "chip": "1",
+      "video": "media/curriculum/giraffe_push_00.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_push_00.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "one 1 m/s kick while walking 0.4 m/s on gentle terrain",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "2",
+      "video": "media/curriculum/giraffe_push_01.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_push_01.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "one 2 m/s kick while walking 0.4 m/s on gentle terrain",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "3",
+      "video": "media/curriculum/giraffe_push_02.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_push_02.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "one 3 m/s kick while walking 0.4 m/s on gentle terrain",
+      "passed": 15,
+      "n": 16
+     },
+     {
+      "chip": "4",
+      "video": "media/curriculum/giraffe_push_03.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_push_03.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "one 4 m/s kick while walking 0.4 m/s on gentle terrain",
+      "passed": 16,
+      "n": 16
+     },
+     {
+      "chip": "5",
+      "video": "media/curriculum/giraffe_push_04.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_push_04.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "one 5 m/s kick while walking 0.4 m/s on gentle terrain",
+      "passed": 11,
+      "n": 16
+     },
+     {
+      "chip": "6",
+      "video": "media/curriculum/giraffe_push_05.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_push_05.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "one 6 m/s kick while walking 0.4 m/s on gentle terrain",
+      "passed": 5,
+      "n": 16
+     },
+     {
+      "chip": "7",
+      "video": "media/curriculum/giraffe_push_06.mp4",
+      "video_ready": true,
+      "joints": "data/joints/giraffe_push_06.json",
+      "joints_ready": true,
+      "reached": true,
+      "label": "one 7 m/s kick while walking 0.4 m/s on gentle terrain",
+      "passed": 4,
+      "n": 16
+     },
+     {
+      "chip": "8",
+      "video": "media/curriculum/giraffe_push_07.mp4",
+      "video_ready": false,
+      "joints": "data/joints/giraffe_push_07.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "9",
+      "video": "media/curriculum/giraffe_push_08.mp4",
+      "video_ready": false,
+      "joints": "data/joints/giraffe_push_08.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "10",
+      "video": "media/curriculum/giraffe_push_09.mp4",
+      "video_ready": false,
+      "joints": "data/joints/giraffe_push_09.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "11",
+      "video": "media/curriculum/giraffe_push_10.mp4",
+      "video_ready": false,
+      "joints": "data/joints/giraffe_push_10.json",
+      "joints_ready": false,
+      "reached": false
+     },
+     {
+      "chip": "12",
+      "video": "media/curriculum/giraffe_push_11.mp4",
+      "video_ready": false,
+      "joints": "data/joints/giraffe_push_11.json",
+      "joints_ready": false,
+      "reached": false
+     }
+    ]
+   }
+  }
+ }
+}
