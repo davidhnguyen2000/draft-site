@@ -1,10 +1,10 @@
-// Draft project page: lazy autoplay, slider fill, BibTeX copy.
+// Draft project page: lazy autoplay, slider fill, BibTeX copy. (draft-site-fixes)
 
-// Range sliders draw their filled part from --p; keep it at the thumb, whether
-// the user moved it or a script set its value.
+// Range sliders draw their filled part from --frac (0..1); keep it at the thumb,
+// whether the user moved it or a script set its value.
 window.paintRange = (el) => {
   const min = Number(el.min || 0), max = Number(el.max || 100);
-  el.style.setProperty("--p", `${((Number(el.value) - min) / (max - min || 1)) * 100}%`);
+  el.style.setProperty("--frac", (Number(el.value) - min) / (max - min || 1));
 };
 document.addEventListener("input", (e) => { if (e.target.type === "range") window.paintRange(e.target); });
 

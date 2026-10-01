@@ -85,8 +85,19 @@
     aim = { target, position: target.clone().add(dir.multiplyScalar(need * 1.25)) };
   }
 
+  //: While a simulation runs, the view pans with the robot: the orbit target and
+  //: the camera move together toward the mean of its geoms, eased with a time
+  //: constant of FOLLOW_S, so the angle and distance stay as the reader left them.
+  const follow = { on: false, centre: null, last: performance.now() };
+  const FOLLOW_S = 0.4;
   (function loop() {
-    if (aim) {
+    const now = performance.now(), dt = Math.min(0.1, (now - follow.last) / 1000);
+    follow.last = now;
+    if (follow.on && follow.centre) {
+      const step = follow.centre.clone().sub(controls.target).multiplyScalar(1 - Math.exp(-dt / FOLLOW_S));
+      controls.target.add(step);
+      camera.position.add(step);
+    } else if (aim) {
       controls.target.lerp(aim.target, 0.12);
       camera.position.lerp(aim.position, 0.12);
       if (camera.position.distanceTo(aim.position) < 1e-3) aim = null;
@@ -125,12 +136,93 @@
     return m;
   }
 
+  //: The meshes drawn for each geom, in order (null where a type is not drawn),
+  //: so that a simulation frame can move them.
+  let meshes = [];
   function drawRobot(geoms, refused) {
     for (const child of body3d.children) { child.geometry.dispose(); child.material.dispose(); }
     body3d.clear();
-    for (const g of geoms) {
+    meshes = geoms.map((g) => {
       const m = geomMesh(g, refused);
       if (m) body3d.add(m);
+      return m;
+    });
+  }
+
+  // ------------------------------------------------------------ simulate
+
+  // The worker drops the design onto the floor with its motors off: only gravity,
+  // the joints' own friction and damping, and the floor (builder_worker.js, which
+  // can also hold the pose with the training motor model). Each frame moves the meshes.
+  let simId = 0, simRunning = false, simMotors = false;
+  const SIM_NOTE = { true: "its motors hold the pose; nothing balances it",
+                     false: "motors off: only gravity, joint friction and damping" };
+  const SIM_BUTTONS = [["b-sim", false, "Simulate", "fas fa-play"]];
+  function simButton() {
+    const off = !axes || busy || !lastGood || !$("b-refused").hidden;
+    for (const [id, motors, label, icon] of SIM_BUTTONS) {
+      const b = $(id), running = simRunning && simMotors === motors;
+      b.disabled = off;
+      b.querySelector("i").className = running ? "fas fa-stop" : icon;
+      b.querySelector("span").textContent = running ? "Stop" : label;
+    }
+  }
+  function simStopNow() {
+    if (!simRunning) return;
+    worker.postMessage({ type: "simstop" });
+    simRunning = false;
+    follow.on = false;
+    $("b-sim-note").hidden = true;
+    simButton();
+  }
+  function simClick(motors) {
+    if (simRunning && simMotors === motors) {
+      simStopNow();
+      if (lastGood) drawRobot(lastGood.geoms, false);
+      return;
+    }
+    if (!lastGood) return;
+    simStopNow();                        // the other mode, if it is running
+    drawRobot(lastGood.geoms, false);
+    simRunning = true;
+    simMotors = motors;
+    follow.on = true;
+    follow.centre = null;
+    worker.postMessage({ type: "simulate", id: ++simId, robot, motors });
+    $("b-sim-note").hidden = false;
+    $("b-sim-note").textContent = "Dropping it onto the floor…";
+    simButton();
+  }
+  for (const [id, motors] of SIM_BUTTONS) $(id).addEventListener("click", () => simClick(motors));
+  function onSim(msg) {
+    if (msg.id !== simId) return;
+    if (msg.type === "simframe" && simRunning) {
+      const x = msg.x;
+      meshes.forEach((m, k) => {
+        if (!m) return;
+        const o = 12 * k;
+        m.matrix.set(x[o + 3], x[o + 4], x[o + 5], x[o], x[o + 6], x[o + 7], x[o + 8], x[o + 1],
+                     x[o + 9], x[o + 10], x[o + 11], x[o + 2], 0, 0, 0, 1);
+      });
+      $("b-sim-note").textContent = `${msg.t.toFixed(1)} s · ${SIM_NOTE[simMotors]}`;
+      // The mean of the geoms, for the view to follow: steadier than the bounding
+      // box, which jumps whenever a limb swings out.
+      const n = x.length / 12;
+      let cx = 0, cy = 0, cz = 0;
+      for (let k = 0; k < n; k++) { cx += x[12 * k]; cy += x[12 * k + 1]; cz += x[12 * k + 2]; }
+      follow.centre = new THREE.Vector3(cx / n, cy / n, cz / n);
+    }
+    if (msg.type === "simend") {
+      const wasRunning = simRunning;
+      simRunning = false;
+      follow.on = false;
+      simButton();
+      if (msg.reason === "done" && wasRunning) $("b-sim-note").textContent += " · done";
+      else if (msg.reason === "unstable" || msg.reason === "error") {
+        $("b-sim-note").hidden = false;
+        $("b-sim-note").textContent = msg.reason === "error" ? `The simulation could not start: ${msg.text}`
+          : "The simulation went unstable and was stopped.";
+      }
     }
   }
 
@@ -162,16 +254,54 @@
     if (msg.type === "error") pointsBusy = false;
   }
 
+  // ------------------------------------------------------------ loading bar
+
+  // About what one start downloads (MuJoCo, Pyodide and its packages, the bundle),
+  // measured; the bar is the share of it fetched so far, and the last tenth is
+  // unpacking Draft and generating the first design.
+  const EXPECTED_MB = 38;
+  const load = { shown: 0, target: 0, cap: 0.9, last: performance.now(), done: false, mb: 0 };
+  function loadTick() {
+    if (load.done) return;
+    // Between files nothing reports, so creep a little toward the stage's cap
+    // rather than sit still, but never past it.
+    const idle = (performance.now() - load.last) / 1000;
+    const goal = Math.min(load.cap, load.target + 0.05 * (1 - Math.exp(-idle / 5)));
+    load.shown = Math.max(load.shown, load.shown + (goal - load.shown) * 0.12);
+    $("b-load-fill").style.width = `${(load.shown * 100).toFixed(1)}%`;
+    $("b-load-fill").parentElement.setAttribute("aria-valuenow", Math.round(load.shown * 100));
+    if (load.mb) $("b-load-detail").textContent = `${Math.round(load.shown * 100)}% · ${load.mb.toFixed(1)} of about ${EXPECTED_MB} MB`;
+    requestAnimationFrame(loadTick);
+  }
+  requestAnimationFrame(loadTick);
+  function loadBytes(bytes) {
+    load.mb = bytes / 1e6;
+    load.target = Math.max(load.target, Math.min(0.9, (0.9 * load.mb) / EXPECTED_MB));
+    load.last = performance.now();
+  }
+  function loadStage(text) {
+    $("b-load-text").textContent = text;
+    if (/Draft/.test(text)) { load.target = Math.max(load.target, 0.9); load.cap = 0.99; load.last = performance.now(); }
+  }
+  function loadDone() {
+    load.done = true;
+    $("b-load-fill").style.width = "100%";
+  }
+
   function fail(text) {
+    load.done = true;
     $("b-loading").hidden = false;
     $("b-loading").textContent = text;
   }
 
   function request() {
     if (!axes) return;
+    simStopNow();
+    $("b-sim-note").hidden = true;
     if (busy) { queued = true; return; }     // only the latest position matters
     busy = true;
     $("b-time").textContent = "generating…";
+    simButton();
     worker.postMessage({ type: "generate", id: ++requestId, robot, values: { ...values } });
   }
 
@@ -185,7 +315,9 @@
   }
 
   function handle(msg) {
-    if (msg.type === "status") $("b-loading").textContent = msg.text;
+    if (msg.type === "simstart" || msg.type === "simframe" || msg.type === "simend") return onSim(msg);
+    if (msg.type === "status") loadStage(msg.text);
+    if (msg.type === "progress") loadBytes(msg.bytes);
     if (msg.type === "ready") {
       if (msg.api !== API || !msg.axes || !msg.axes.robots) {
         fail("This page and the builder's files are out of step, probably a stale browser "
@@ -200,10 +332,12 @@
       const q = new URLSearchParams(location.search).get("robot");
       buildTabs();
       selectRobot(robots[q] ? q : "quadruped", true);
+      loadDone();
       $("b-loading").hidden = true;
     }
     if (msg.type === "result") {
       busy = false;
+      simButton();
       if (msg.id === requestId && msg.robot === robot) show(msg.design, msg.ms);
       if (queued) { queued = false; request(); }
     }
@@ -228,12 +362,12 @@
   fetch("py/bundle.json", { cache: "no-store" })
     .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`py/bundle.json: HTTP ${r.status}`))))
     .then(({ version }) => {
-      worker = new Worker(`static/js/builder_worker.js?v=${version}`, { type: "module" });
+      worker = new Worker(`static/js/builder_worker.js?v=${version}.p3`, { type: "module" });
       worker.onmessage = onMessage;
       worker.onerror = (e) => fail(`The builder could not start: ${e.message || "worker error"}`);
       // The second worker only runs the actuator trends, fast enough to move the
       // fit plots on every step of a drag while the first is still generating.
-      fitsWorker = new Worker(`static/js/builder_worker.js?v=${version}&role=fits`, { type: "module" });
+      fitsWorker = new Worker(`static/js/builder_worker.js?v=${version}.p3&role=fits`, { type: "module" });
       fitsWorker.onmessage = onFits;
     })
     .catch((err) => fail(`The builder could not start: ${err.message} (run scripts/site/build_pyodide.py)`));
@@ -596,5 +730,6 @@
     framed = true;
     renderReport(d.report);
     if (!dragging) drawFits(d.report.actuators);
+    simButton();
   }
 })();

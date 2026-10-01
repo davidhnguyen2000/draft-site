@@ -14,18 +14,20 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="media/social.jpg">
 
-  <link rel="icon" href="media/logo/draft.svg" type="image/svg+xml">
+  <link rel="icon" href="media/logo/draft-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css?family=Google+Sans:400,500,700|Noto+Sans:400,500,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.4/css/academicons.min.css">
-  <link rel="stylesheet" href="static/css/style.css">
+  <link rel="stylesheet" href="static/css/style.css?v=fix6">
 </head>
 <body>
 
 <!-- ============================================================ HERO -->
-<header class="hero">
+<header class="hero hero-video">
+  <video class="hero-bg" autoplay muted loop playsinline preload="auto" aria-hidden="true"
+         poster="media/video/hero_bg.jpg"><source src="media/video/hero_bg.mp4" type="video/mp4"></video>
   <div class="container narrow center">
     <h1 class="title">Draft</h1>
     <p class="subtitle">A Parametric Tool for Robot Design Exploration</p>
@@ -45,10 +47,8 @@
       <img src="media/logo/brl.svg" alt="MIT Biomimetic Robotics Lab" class="logo-brl">
     </div>
 
-    <!-- Paper and arXiv are disabled until there is a link; set href and drop .is-disabled. -->
     <nav class="links">
-      <a class="pill is-disabled" href="#" aria-disabled="true" title="Coming soon"><i class="fas fa-file-pdf"></i><span>Paper</span></a>
-      <a class="pill is-disabled" href="#" aria-disabled="true" title="Coming soon"><i class="ai ai-arxiv"></i><span>arXiv</span></a>
+      <a class="pill" href="https://arxiv.org/pdf/2609.38405"><i class="ai ai-arxiv"></i><span>arXiv</span></a>
       <a class="pill" href="#video"><i class="fab fa-youtube"></i><span>Video</span></a>
       <a class="pill" href="#builder"><i class="fas fa-sliders"></i><span>Build a robot</span></a>
       <a class="pill" href="https://github.com/davidhnguyen2000/parametric-humanoid"><i class="fab fa-github"></i><span>Code</span></a>
@@ -59,20 +59,11 @@
 <!-- ============================================================ SUMMARY -->
 <section class="summary">
   <div class="container narrow">
-    <p>Trying a new robot design usually means redrawing it in CAD and rebuilding a
-      simulation model before a controller can be trained on it, so the choices that
-      set a machine's limits get made early, on static estimates. <b>Draft</b> removes
-      that step. A robot is a table of parameters and a kinematic tree, and one
-      compiler turns them into a simulation-ready MuJoCo model.</p>
-    <p>Whatever a design does not state, such as an actuator's gear ratio, mass, size
-      and rotor inertia, or a link's mass, comes from trends fitted to 114 real
-      actuators and 49 published robots. A feasibility gate refuses what no
-      catalogued hardware could build. Rebuilt this way from their geometry and
-      joint specifications alone, four commercial robots land within 25% of their
-      real mass.</p>
-    <p>Below, change a quadruped or a humanoid and watch Draft regenerate it in your
-      browser. Then see how three quadrupeds generated from one description, trained
-      under one curriculum, trade off speed, stair climbing and push recovery.</p>
+    <p><b>Draft</b> enables high-level design decision-making for robots through medium-fidelity models and reinforcement learning.
+        It does so by compiling robot kinematic trees from primitive links, which can be parametrized instantly to explore robot performance.
+        Free parameters are fit to characterized trends for robot actuators and links to ground the models in what is credible to build.
+        Below, explore how Draft allows for rapid design adjustment, and investigate how design changes influence performance.
+    </p>
   </div>
 </section>
 
@@ -110,12 +101,22 @@
             <span class="b-status" id="b-status"></span>
             <span class="b-time" id="b-time"></span>
           </div>
+          <div class="b-sim-bar">
+            <span class="b-sim-note" id="b-sim-note" hidden></span>
+            <button class="b-sim" type="button" id="b-sim" disabled><i class="fas fa-play"></i> <span>Simulate</span></button>
+          </div>
           <div class="b-refused" id="b-refused" hidden>
             <b><i class="fas fa-ban"></i> Refused by the feasibility gate</b>
             <ul id="b-refused-list"></ul>
             <span class="small">Showing the last design that passed.</span>
           </div>
-          <div class="b-loading" id="b-loading">Starting the generator…</div>
+          <div class="b-loading" id="b-loading">
+            <div class="b-load">
+              <span class="b-load-text" id="b-load-text">Starting the generator…</span>
+              <div class="b-load-bar" role="progressbar" aria-label="Loading the builder" aria-valuemin="0" aria-valuemax="100"><i id="b-load-fill"></i></div>
+              <span class="b-load-detail" id="b-load-detail">The first visit downloads about 38 MB; later visits load from the browser's cache.</span>
+            </div>
+          </div>
         </div>
 
         <div class="b-fits" id="b-fits">
@@ -200,7 +201,7 @@
     <h2 class="section-title">One curriculum, three answers</h2>
     <p class="lede">Three quadrupeds generated from one description train in the same environment
       under the same curriculum. Ramp the difficulty and watch where each one gives out, and
-      which of its joints hits the edge of its motor's torque–speed curve first.</p>
+      which of its joints runs closest to its motor's limits.</p>
 
     <div class="explorer-bar">
       <label class="switch">
@@ -243,12 +244,13 @@
             <div class="plot-head">
               <span>Joint utilization over the run</span>
             </div>
-            <canvas class="ts-plot" aria-label="Torque against speed for each joint, as a share of its motor's limits"></canvas>
+            <!-- draft-site-fixes: utilization bars -->
+            <canvas class="ts-plot" aria-label="Torque and speed of each joint type, as a share of its motor's limits"></canvas>
+            <div class="plot-tip" hidden></div>
             <div class="plot-legend">
-              <span><i style="--c:var(--j-roll)"></i>hip roll</span>
-              <span><i style="--c:var(--j-pitch)"></i>hip pitch</span>
-              <span><i style="--c:var(--j-knee)"></i>knee</span>
-              <span><i class="ring"></i>95th percentile</span>
+              <span><i class="sq" style="--c:var(--tau-c)"></i>torque, % of peak</span>
+              <span><i class="sq" style="--c:var(--omega-c)"></i>speed, % of no-load</span>
+              <span><i class="dash"></i>motor limit</span>
             </div>
             <p class="plot-readout"></p>
           </div>
@@ -342,9 +344,13 @@
     <div class="bibtex">
       <button class="copy" type="button" aria-label="Copy BibTeX"><i class="far fa-copy"></i> <span>Copy</span></button>
 <pre><code id="bibtex-code">@misc{nguyen2026draft,
-  title  = {Draft: A Parametric Tool for Robot Design Exploration},
-  author = {Nguyen, David and Coelho, Marcelo and Kim, Sangbae},
-  year   = {2026}
+  title         = {Draft: A Parametric Tool for Robot Design Exploration},
+  author        = {Nguyen, David and Coelho, Marcelo and Kim, Sangbae},
+  year          = {2026},
+  eprint        = {2609.38405},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.RO},
+  url           = {https://arxiv.org/abs/2609.38405}
 }</code></pre>
     </div>
   </div>
@@ -358,8 +364,14 @@
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-<script src="static/js/main.js"></script>
-<script src="static/js/explorer.js"></script>
-<script src="static/js/builder.js"></script>
+<script src="static/js/main.js?v=fix6"></script>
+<script src="static/js/explorer.js?v=fix6"></script>
+<script src="static/js/builder.js?v=fix10"></script>
+<script>
+  // Hold the hero clip on its poster frame for readers who ask for less motion.
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const v = document.querySelector(".hero-bg"); v.removeAttribute("autoplay"); v.pause();
+  }
+</script>
 </body>
 </html>
